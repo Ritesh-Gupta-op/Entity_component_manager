@@ -22,13 +22,13 @@ Here is how you can use the ECM to drive a standard SFML game loop, separating y
 ## How to Use:
 When building your SFML game with this manager, it is highly recommended to split your logic into distinct Systems:
 
-## InputSystem: Reads sf::Keyboard or sf::Mouse and updates Velocity components.
+InputSystem: Reads sf::Keyboard or sf::Mouse and updates Velocity components.
 
-## PhysicsSystem: Iterates over all entities with Transform and Velocity components and applies movement based on dt.
+PhysicsSystem: Iterates over all entities with Transform and Velocity components and applies movement based on dt.
 
-## CollisionSystem: Checks sf::FloatRect intersections between entities that possess a Collider component.
+ CollisionSystem: Checks sf::FloatRect intersections between entities that possess a Collider component.
 
-## RenderSystem: Iterates over entities with Transform and Renderable components, syncs their positions, and calls window.draw().
+ RenderSystem: Iterates over entities with Transform and Renderable components, syncs their positions, and calls window.draw().
 
 ## Installation
 Add EntityManager.h and EntityManager.cpp to your SFML project directory.
