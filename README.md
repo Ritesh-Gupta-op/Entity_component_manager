@@ -1,6 +1,9 @@
 ## Entity Component Manager (ECM)
 
 A lightweight and modular Entity Component System (ECS) manager designed to simplify game development by decoupling data (components) from behavior (systems).
+## Sample Entity(circle):
+
+<img width="796" height="758" alt="Screenshot 2026-05-01 193128" src="https://github.com/user-attachments/assets/e7103c50-ba7e-4605-aac9-7df3675f9453" />
 
 ## 🚀 Features
 Simple and flexible ECS architecture
