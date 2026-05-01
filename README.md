@@ -76,14 +76,14 @@ while (gameRunning) {
     updateMovement(ecm);
     render();
 }
-🧹 Destroying Entities
+## 🧹 Destroying Entities
 ecm.destroyEntity(player);
 ## ⚙️ Best Practices
 Keep components data-only (no logic)
 Keep systems focused and single-purpose
 Avoid large “god systems”
 Use multiple small systems instead of one big one
-📁 Example Structure
+## 📁 Example Structure
 /game
   /components
     Position.h
