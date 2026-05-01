@@ -1,38 +1,101 @@
-## SFML Entity Component Manager (ECM)
-A lightweight, high-performance Entity Component Manager designed specifically for 2D game development with SFML (Simple and Fast Multimedia Library). This system decouples game data from logic, utilizing a Data-Oriented Design (DOD) approach to maximize cache coherency while keeping rendering and physics updates blazingly fast.
+## Entity Component Manager (ECM)
 
-## Features
-Seamless SFML Integration: Perfectly suited for managing sf::Sprite, sf::Shape, and sf::Transformable objects as pure data components.
+A lightweight and modular Entity Component System (ECS) manager designed to simplify game development by decoupling data (components) from behavior (systems).
 
-Fast Component Lookup: Utilizes contiguous memory pools to ensure fast iteration during your SFML Update and Draw loops.
+## 🚀 Features
+Simple and flexible ECS architecture
+Fast entity creation and destruction
+Easy component attachment and removal
+Efficient querying of entities by components
+Scalable for small to large games
+📦 Installation
+## Clone the repository:
+git clone https://github.com/your-username/entity-component-manager.git
+Add the source files to your project:
+/src/ecm/
+Include the main header/module in your game:
+#include "ECM.h"
+🧠 Core Concepts
+1. Entity
 
-Flexible Entity Management: Create, recycle, and destroy entities seamlessly using unique IDs (e.g., uint32_t).
+A unique ID representing a game object.
 
-Type-Safe API: Templated architecture ensures safe and intuitive component assignment.
+Entity player = ecm.createEntity();
+2. Component
 
-## Core Concepts
-Entity: A simple unique identifier. It acts as a key to look up data, holding no methods or state itself.
+Plain data attached to entities.
 
-Component: Plain Old Data (POD) structures representing specific attributes (e.g., sf::Vector2f for position, sf::Sprite for visuals).
+struct Position {
+    float x, y;
+};
 
-Manager: The central registry that maps Entity IDs to their respective Component data pools and handles entity lifecycles.
+struct Velocity {
+    float dx, dy;
+};
+3. Adding Components
+ecm.addComponent<Position>(player, {0.0f, 0.0f});
+ecm.addComponent<Velocity>(player, {1.0f, 1.0f});
+4. Getting Components
+Position& pos = ecm.getComponent<Position>(player);
+5. Removing Components
+ecm.removeComponent<Velocity>(player);
+6. Systems (Logic)
 
-## Quick Start & Game Loop Example
-Here is how you can use the ECM to drive a standard SFML game loop, separating your physics logic from your rendering logic.
-## How to Use:
-When building your SFML game with this manager, it is highly recommended to split your logic into distinct Systems:
+Systems operate on entities with specific components.
 
-InputSystem: Reads sf::Keyboard or sf::Mouse and updates Velocity components.
+for (auto entity : ecm.getEntitiesWith<Position, Velocity>()) {
+    auto& pos = ecm.getComponent<Position>(entity);
+    auto& vel = ecm.getComponent<Velocity>(entity);
 
-PhysicsSystem: Iterates over all entities with Transform and Velocity components and applies movement based on dt.
+    pos.x += vel.dx;
+    pos.y += vel.dy;
+}
+## 🎮 How to Use in Your Game
+Step 1: Initialize ECM
+ECM ecm;
+Step 2: Create Entities
+Entity player = ecm.createEntity();
+Step 3: Attach Components
+ecm.addComponent<Position>(player, {0, 0});
+ecm.addComponent<Velocity>(player, {2, 3});
+Step 4: Create Systems
 
- CollisionSystem: Checks sf::FloatRect intersections between entities that possess a Collider component.
+Example: Movement system
 
- RenderSystem: Iterates over entities with Transform and Renderable components, syncs their positions, and calls window.draw().
+void updateMovement(ECM& ecm) {
+    for (auto entity : ecm.getEntitiesWith<Position, Velocity>()) {
+        auto& pos = ecm.getComponent<Position>(entity);
+        auto& vel = ecm.getComponent<Velocity>(entity);
 
-## Installation
-Add EntityManager.h and EntityManager.cpp to your SFML project directory.
+        pos.x += vel.dx;
+        pos.y += vel.dy;
+    }
+}
+Step 5: Game Loop Integration
+while (gameRunning) {
+    updateMovement(ecm);
+    render();
+}
+🧹 Destroying Entities
+ecm.destroyEntity(player);
+## ⚙️ Best Practices
+Keep components data-only (no logic)
+Keep systems focused and single-purpose
+Avoid large “god systems”
+Use multiple small systems instead of one big one
+📁 Example Structure
+/game
+  /components
+    Position.h
+    Velocity.h
+  /systems
+    MovementSystem.cpp
+  main.cpp
+## 🛠 Future Improvements
+Event system
+Serialization (save/load)
+Multithreading support
+Debug tools
+📄 License
 
-Ensure you are linking against the standard SFML modules (sfml-graphics, sfml-window, sfml-system).
-
-Compile using C++17 or higher.
+MIT License
